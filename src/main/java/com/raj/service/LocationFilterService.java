@@ -1,7 +1,7 @@
 package com.raj.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,9 +9,12 @@ import java.util.Set;
 public class LocationFilterService implements FilterService{
 	
 	public Map<String, Set<Long>> getFilters(List<ProfileBean> profiles){
-		Map locationFiltersMap = new HashMap<String, Set<Long>>();
+		Map<String, Set<Long>> locationFiltersMap = new HashMap<String, Set<Long>>();
 		for(ProfileBean profileBean: profiles) {
-			List<Long> profileKeys = new ArrayList<Long>();
+			Set<Long> profileKeys = locationFiltersMap.get(profileBean.getLocation());
+			if(profileKeys==null) {
+				profileKeys = new HashSet<Long>();
+			}
 			profileKeys.add(profileBean.getProfileKey());
 			locationFiltersMap.put(profileBean.getLocation(),profileKeys);
 		}

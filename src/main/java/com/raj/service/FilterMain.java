@@ -11,12 +11,14 @@ import java.util.concurrent.ExecutionException;
 public class FilterMain {
 	
 		public static void main(String[] args) throws ExecutionException, InterruptedException {
-	    	
+			FilterMain fm = new FilterMain();
+			List<ProfileBean> profileList = fm.getProfileList();
+			fm.prepareFilters(profileList);
+	    }
+		
+		private void prepareFilters(List<ProfileBean> profileList) throws InterruptedException, ExecutionException {
 			FilterService locationFilterService = new LocationFilterService();
 	    	FilterService countryFilterService = new CountryFilterService();
-	    	FilterMain fm = new FilterMain();
-	    	List<ProfileBean> profileList = fm.getProfileList();
-	    	
 	    	
 	    	CompletableFuture<Map<String, Set<Long>>> locationFilter = CompletableFuture.supplyAsync(() -> {
 	            return locationFilterService.getFilters(profileList);
@@ -35,7 +37,7 @@ public class FilterMain {
 	    	filtersMap.put("Country", countryFilterMap);
 	    	
 	    	System.out.println(filtersMap);
-	    }
+		}
 
 		private List<ProfileBean> getProfileList() {
 			List<ProfileBean> profileList  = new ArrayList<>();
